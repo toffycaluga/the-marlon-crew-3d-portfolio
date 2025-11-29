@@ -1,5 +1,7 @@
+// src/three/initScene.js
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { viewsConfig } from './viewsConfig.js';
 
 export function initThreeScene(canvas) {
   // Renderer
@@ -27,7 +29,6 @@ export function initThreeScene(canvas) {
     0.1,
     100
   );
-  camera.position.set(0, 2, 5);
   scene.add(camera);
 
   // Lights
@@ -38,17 +39,59 @@ export function initThreeScene(canvas) {
   dirLight.position.set(3, 5, 2);
   scene.add(dirLight);
 
-  // Cube placeholder
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshStandardMaterial({ color: 0xff0055 });
-  const cube = new THREE.Mesh(geometry, material);
+  // 🔹 Piso
+  const floorGeometry = new THREE.PlaneGeometry(40, 40);
+  const floorMaterial = new THREE.MeshStandardMaterial({
+    color: 0x111111,
+    roughness: 0.8,
+    metalness: 0.1,
+  });
+  const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+  floor.rotation.x = -Math.PI / 2;
+  floor.position.y = 0;
+  scene.add(floor);
+
+  // 🔹 Ring central (cilindro fino)
+  const ringGeometry = new THREE.CylinderGeometry(5, 5, 0.3, 64);
+  const ringMaterial = new THREE.MeshStandardMaterial({
+    color: 0x8a1b3a, // rojo circo
+    roughness: 0.4,
+  });
+  const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+  ring.position.y = 0.15;
+  scene.add(ring);
+
+  // 🔹 Placeholder en el centro (por ahora mantenemos el cubo)
+  const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+  const cubeMaterial = new THREE.MeshStandardMaterial({ color: 0xff0055 });
+  const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+  cube.position.y = 1;
   scene.add(cube);
 
   // Controls
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
 
-  // Handle resize
+  // 🔹 Función para cambiar de vista
+  function setView(name) {
+    const view = viewsConfig[name];
+    if (!view) return;
+
+    const [px, py, pz] = view.position;
+    const [lx, ly, lz] = view.lookAt;
+
+    camera.position.set(px, py, pz);
+    controls.target.set(lx, ly, lz);
+    controls.update();
+  }
+
+  // Vista inicial
+  setView('center');
+
+  // Exponer para usar desde fuera (por ahora, vía window)
+  window.setThreeView = setView;
+
+  // Resize
   function onWindowResize() {
     sizes.width = window.innerWidth;
     sizes.height = window.innerHeight;
@@ -62,7 +105,7 @@ export function initThreeScene(canvas) {
 
   window.addEventListener('resize', onWindowResize);
 
-  // Animation loop
+  // Loop
   function animate() {
     requestAnimationFrame(animate);
 
