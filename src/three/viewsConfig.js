@@ -28,4 +28,8 @@ export const viewsConfig = {
     position: [-10, 4, -10],
     lookAt: [-6, 2, -6],
   },
+   contacto: {
+    position: [18, 2, -5],   // puedes ajustar después
+    lookAt: [8, 2, -4],      // punto donde pongamos la “oficina”
+  },
 };

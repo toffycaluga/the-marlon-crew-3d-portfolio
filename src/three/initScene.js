@@ -151,6 +151,17 @@ export function initThreeScene(canvas) {
   crate3.position.set(-8, 1.8, -7.5);
   scene.add(crate3);
 
+
+
+    // 🔹 Zona contacto (oficina / taquilla de contrataciones)
+  const contactGeom = new THREE.BoxGeometry(6, 3, 4);
+  const contactMat = new THREE.MeshStandardMaterial({ color: 0x22c55e }); // verde distinto
+
+  const contactoBox = new THREE.Mesh(contactGeom, contactMat);
+  contactoBox.position.set(9, 1.5, -4); // que coincida con el lookAt de 'contacto'
+  scene.add(contactoBox);
+
+
   // Controls
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
