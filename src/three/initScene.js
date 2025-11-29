@@ -52,21 +52,21 @@ export function initThreeScene(canvas) {
   // 🔹 Ring central
   const ringGeometry = new THREE.CylinderGeometry(6, 6, 0.5, 64);
   const ringMaterial = new THREE.MeshStandardMaterial({
-    color: 0x8a1b3a, // rojo circo
+    color: 0x8a1b3a,
     roughness: 0.5,
   });
   const ring = new THREE.Mesh(ringGeometry, ringMaterial);
   ring.position.y = 0.25;
   scene.add(ring);
 
-  // 🔹 Cubo central (placeholder de acto)
+  // 🔹 Cubo central (placeholder)
   const cubeGeometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
   const cubeMaterial = new THREE.MeshStandardMaterial({ color: 0xff0055 });
   const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
   cube.position.y = 1.25;
   scene.add(cube);
 
-  // 🔹 Estructura de trapecio (poste + plataforma)
+  // 🔹 Trapecio estructura
   const postGeom = new THREE.CylinderGeometry(0.2, 0.2, 10, 16);
   const postMat = new THREE.MeshStandardMaterial({ color: 0xcccccc });
   const postLeft = new THREE.Mesh(postGeom, postMat);
@@ -82,14 +82,13 @@ export function initThreeScene(canvas) {
   bar.position.set(0, 9.5, 2);
   scene.add(bar);
 
-  // plataforma donde estaría el volante
   const platGeom = new THREE.BoxGeometry(2, 0.2, 1.2);
   const platMat = new THREE.MeshStandardMaterial({ color: 0x1e293b });
   const platform = new THREE.Mesh(platGeom, platMat);
   platform.position.set(0, 8, 3.2);
   scene.add(platform);
 
-  // 🔹 Gradas (público)
+  // 🔹 Gradas
   const stepGeom = new THREE.BoxGeometry(14, 1, 3);
   const stepMat = new THREE.MeshStandardMaterial({ color: 0x0b1120 });
   const step1 = new THREE.Mesh(stepGeom, stepMat);
@@ -106,7 +105,7 @@ export function initThreeScene(canvas) {
   step3.position.set(0, 2.5, -13);
   scene.add(step3);
 
-  // 🔹 Entrada del circo (arco)
+  // 🔹 Entrada
   const columnGeom = new THREE.BoxGeometry(0.8, 4, 0.8);
   const columnMat = new THREE.MeshStandardMaterial({ color: 0x16a34a });
   const colLeft = new THREE.Mesh(columnGeom, columnMat);
@@ -122,21 +121,21 @@ export function initThreeScene(canvas) {
   arch.position.set(-10, 5, 4);
   scene.add(arch);
 
-  // 🔹 Vestidores (bloque lateral)
+  // 🔹 Vestidores
   const vestGeom = new THREE.BoxGeometry(8, 3, 6);
   const vestMat = new THREE.MeshStandardMaterial({ color: 0x1d4ed8 });
   const vestidores = new THREE.Mesh(vestGeom, vestMat);
   vestidores.position.set(10, 1.5, 4);
   scene.add(vestidores);
 
-  // 🔹 Zona equipos (bloque al fondo)
+  // 🔹 Equipos
   const eqGeom = new THREE.BoxGeometry(12, 3, 4);
   const eqMat = new THREE.MeshStandardMaterial({ color: 0xfacc15 });
   const equipos = new THREE.Mesh(eqGeom, eqMat);
   equipos.position.set(0, 1.5, 10);
   scene.add(equipos);
 
-  // 🔹 Utilería (bloque de cajas)
+  // 🔹 Utilería
   const crateGeom = new THREE.BoxGeometry(1.2, 1.2, 1.2);
   const crateMat = new THREE.MeshStandardMaterial({ color: 0xa855f7 });
 
@@ -156,21 +155,36 @@ export function initThreeScene(canvas) {
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
 
-  function setView(name) {
+  // 🔹 Vectores para animar transición de cámara
+  const targetPos = new THREE.Vector3();
+  const targetLook = new THREE.Vector3();
+
+  // cuán rápido se mueve la cámara hacia el target (0.0 - 1.0)
+  const transitionSpeed = 0.08;
+
+  function setView(name, instant = false) {
     const view = viewsConfig[name];
     if (!view) return;
 
     const [px, py, pz] = view.position;
     const [lx, ly, lz] = view.lookAt;
 
-    camera.position.set(px, py, pz);
-    controls.target.set(lx, ly, lz);
-    controls.update();
+    // actualizar targets
+    targetPos.set(px, py, pz);
+    targetLook.set(lx, ly, lz);
+
+    if (instant) {
+      // para la primera vista inicial: sin animación
+      camera.position.copy(targetPos);
+      controls.target.copy(targetLook);
+      controls.update();
+    }
   }
 
-  // vista inicial
-  setView('center');
-  window.setThreeView = setView;
+  // Vista inicial sin animación
+  setView('center', true);
+  // Exponer para usar desde el UI
+  window.setThreeView = (name) => setView(name, false);
 
   // Resize
   function onWindowResize() {
@@ -189,6 +203,10 @@ export function initThreeScene(canvas) {
   // Loop
   function animate() {
     requestAnimationFrame(animate);
+
+    // 🔹 animar cámara hacia el target
+    camera.position.lerp(targetPos, transitionSpeed);
+    controls.target.lerp(targetLook, transitionSpeed);
 
     cube.rotation.y += 0.01;
     cube.rotation.x += 0.005;
