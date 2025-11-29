@@ -1,19 +1,21 @@
 ---
-import ThreeScene from '@/components/ThreeScene.astro';
+import ThreeScene from '../components/ThreeScene.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<main>
-			<ThreeScene />
-		</main>
-		<!-- <h1>Astro</h1> -->
-	</body>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Flying Cáceres 3D</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+	</style>
+  </head>
+  <body>
+    <main>
+      <ThreeScene />
+    </main>
+  </body>
 </html>

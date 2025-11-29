@@ -1,0 +1,74 @@
+{
+  "panel": {
+    "introTitle": "Flying Cáceres 3D",
+    "introDescription": "Recorre el circo para descubrir el show, el director, la troupe, los equipos y el vestuario."
+  },
+  "buttons": {
+    "center": "Vista general",
+    "trapecio": "Trapecio",
+    "publico": "Público",
+    "entrada": "Entrada",
+    "vestidores": "Vestidores",
+    "equipos": "Equipos",
+    "utileria": "Utilería",
+    "contacto": "Contacto"
+  },
+  "views": {
+    "center": {
+      "title": "The Flying Marlon Caceres",
+      "description": "Arte, precisión y confianza en las alturas. Desde aquí puedes moverte por el circo para descubrir al director, la troupe, los equipos y el vestuario."
+    },
+    "trapecio": {
+      "title": "Plataforma del trapecio",
+      "description": "Zona dedicada a los actos de alto vuelo: saltos de riesgo, combinaciones en el aire y la firma del equipo Flying Cáceres."
+    },
+    "publico": {
+      "title": "Desde el público",
+      "description": "Vista pensada para mostrar los videos del show, highlight reels y material promocional para festivales, teatros y grandes eventos."
+    },
+    "entrada": {
+      "title": "Nuestro Director – Marlon Joel Caceres",
+      "description": "Con 28 años, es el corazón creativo de la troupe: director y trapecista que lleva el arte del trapecio a nuevas alturas, combinando innovación visual y audacia escénica, con experiencia en más de 25 países."
+    },
+    "vestidores": {
+      "title": "Vestuario",
+      "description": "Cada traje está diseñado para realzar el movimiento, la identidad y el brillo de cada número. La creadora residente también confecciona vestuario a medida para espectáculos alrededor del mundo."
+    },
+    "equipos": {
+      "title": "Nuestros equipos de trapecio",
+      "description": "Cada troupe es el resultado de años de dedicación, entrenamiento riguroso y pasión por el vuelo. Formaciones de artistas de nivel internacional, diseñadas para ejecutar rutinas de alto riesgo con precisión, sincronía y elegancia."
+    },
+    "utileria": {
+      "title": "Utilería y recursos técnicos",
+      "description": "Espacio ideal para incluir fichas técnicas, requisitos de montaje, medidas mínimas de estructura y materiales de apoyo para productores y técnicos."
+    },
+    "contacto": {
+      "title": "Contacto y contrataciones",
+      "description": "Cuéntanos sobre tu evento y te contactaremos con la mejor propuesta de show. También puedes escribir directamente al correo oficial o vía WhatsApp."
+    }
+  },
+  "contact": {
+    "form": {
+      "nameLabel": "Nombre completo",
+      "emailLabel": "Correo electrónico",
+      "eventTypeLabel": "Tipo de evento",
+      "messageLabel": "Detalles del evento",
+      "messagePlaceholder": "Fechas tentativas, ciudad, tipo de recinto, requisitos especiales...",
+      "submit": "Enviar solicitud",
+      "successMessage": "Gracias por tu interés. Nos pondremos en contacto contigo."
+    },
+    "eventTypes": {
+      "show": "Show principal Flying Cáceres",
+      "corporativo": "Evento corporativo",
+      "festival": "Festival / gala",
+      "otro": "Otro"
+    },
+    "extra": {
+      "alsoText": "También puedes contactarnos directamente:",
+      "phoneLabel": "Tel",
+      "emailLabel": "Email",
+      "phoneValue": "+49 1521 6880781",
+      "emailValue": "marlonceresgonzalez@gmail.com"
+    }
+  }
+}

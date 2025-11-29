@@ -1,3 +1,4 @@
+// src/three/initScene.js
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { viewsConfig } from './viewsConfig.js';
@@ -59,14 +60,14 @@ export function initThreeScene(canvas) {
   ring.position.y = 0.25;
   scene.add(ring);
 
-  // 🔹 Cubo central (placeholder)
+  // 🔹 Cubo central (placeholder de acto)
   const cubeGeometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
   const cubeMaterial = new THREE.MeshStandardMaterial({ color: 0xff0055 });
   const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
   cube.position.y = 1.25;
   scene.add(cube);
 
-  // 🔹 Trapecio estructura
+  // 🔹 Estructura de trapecio
   const postGeom = new THREE.CylinderGeometry(0.2, 0.2, 10, 16);
   const postMat = new THREE.MeshStandardMaterial({ color: 0xcccccc });
   const postLeft = new THREE.Mesh(postGeom, postMat);
@@ -88,7 +89,7 @@ export function initThreeScene(canvas) {
   platform.position.set(0, 8, 3.2);
   scene.add(platform);
 
-  // 🔹 Gradas
+  // 🔹 Gradas (público)
   const stepGeom = new THREE.BoxGeometry(14, 1, 3);
   const stepMat = new THREE.MeshStandardMaterial({ color: 0x0b1120 });
   const step1 = new THREE.Mesh(stepGeom, stepMat);
@@ -105,7 +106,7 @@ export function initThreeScene(canvas) {
   step3.position.set(0, 2.5, -13);
   scene.add(step3);
 
-  // 🔹 Entrada
+  // 🔹 Entrada del circo (arco)
   const columnGeom = new THREE.BoxGeometry(0.8, 4, 0.8);
   const columnMat = new THREE.MeshStandardMaterial({ color: 0x16a34a });
   const colLeft = new THREE.Mesh(columnGeom, columnMat);
@@ -151,27 +152,21 @@ export function initThreeScene(canvas) {
   crate3.position.set(-8, 1.8, -7.5);
   scene.add(crate3);
 
-
-
-    // 🔹 Zona contacto (oficina / taquilla de contrataciones)
+  // 🔹 Zona contacto (oficina / taquilla de contrataciones)
   const contactGeom = new THREE.BoxGeometry(6, 3, 4);
-  const contactMat = new THREE.MeshStandardMaterial({ color: 0x22c55e }); // verde distinto
-
+  const contactMat = new THREE.MeshStandardMaterial({ color: 0x22c55e });
   const contactoBox = new THREE.Mesh(contactGeom, contactMat);
-  contactoBox.position.set(9, 1.5, -4); // que coincida con el lookAt de 'contacto'
+  contactoBox.position.set(9, 1.5, -4);
   scene.add(contactoBox);
-
 
   // Controls
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
 
-  // 🔹 Vectores para animar transición de cámara
+  // 🔹 Vectores para animar transición de cámara entre vistas
   const targetPos = new THREE.Vector3();
   const targetLook = new THREE.Vector3();
-
-  // cuán rápido se mueve la cámara hacia el target (0.0 - 1.0)
-  const transitionSpeed = 0.08;
+  const transitionSpeed = 0.08; // 0.03 = más lento, 0.1 = más rápido
 
   function setView(name, instant = false) {
     const view = viewsConfig[name];
@@ -180,12 +175,10 @@ export function initThreeScene(canvas) {
     const [px, py, pz] = view.position;
     const [lx, ly, lz] = view.lookAt;
 
-    // actualizar targets
     targetPos.set(px, py, pz);
     targetLook.set(lx, ly, lz);
 
     if (instant) {
-      // para la primera vista inicial: sin animación
       camera.position.copy(targetPos);
       controls.target.copy(targetLook);
       controls.update();
@@ -194,7 +187,8 @@ export function initThreeScene(canvas) {
 
   // Vista inicial sin animación
   setView('center', true);
-  // Exponer para usar desde el UI
+
+  // Exponer función para el UI (botones en Astro)
   window.setThreeView = (name) => setView(name, false);
 
   // Resize
@@ -215,7 +209,7 @@ export function initThreeScene(canvas) {
   function animate() {
     requestAnimationFrame(animate);
 
-    // 🔹 animar cámara hacia el target
+    // Animar cámara y target hacia los targets
     camera.position.lerp(targetPos, transitionSpeed);
     controls.target.lerp(targetLook, transitionSpeed);
 

@@ -1,27 +1,113 @@
 ---
+import es from '../i18n/es.json';
+import en from '../i18n/en.json';
+
+// Idioma inicial (por ahora fijo, luego usamos localStorage si quieres)
+const initialLang = 'es';
+const messagesByLang = { es, en };
+const messages = messagesByLang[initialLang];
 ---
 
 <div class="three-wrapper">
   <canvas id="three-canvas"></canvas>
 
   <div class="overlay-ui">
+    <!-- Selector de idioma -->
+    <select
+      id="lang-switcher"
+      class="lang-switcher"
+      style="pointer-events: auto;"
+    >
+      <option value="es">ES</option>
+      <option value="en">EN</option>
+    </select>
+
     <div class="view-buttons">
-      <button data-view="center">Vista general</button>
-      <button data-view="trapecio">Trapecio</button>
-      <button data-view="publico">Público</button>
-      <button data-view="entrada">Entrada</button>
-      <button data-view="vestidores">Vestidores</button>
-      <button data-view="equipos">Equipos</button>
-      <button data-view="utileria">Utilería</button>
-      <button data-view="contacto">Contacto</button>
+      <button data-view="center">{messages.buttons.center}</button>
+      <button data-view="trapecio">{messages.buttons.trapecio}</button>
+      <button data-view="publico">{messages.buttons.publico}</button>
+      <button data-view="entrada">{messages.buttons.entrada}</button>
+      <button data-view="vestidores">{messages.buttons.vestidores}</button>
+      <button data-view="equipos">{messages.buttons.equipos}</button>
+      <button data-view="utileria">{messages.buttons.utileria}</button>
+      <button data-view="contacto">{messages.buttons.contacto}</button>
     </div>
 
     <div class="view-panel" id="view-panel">
-      <h2 id="view-title">Flying Cáceres 3D</h2>
-      <p id="view-description">
-        Recorre el circo desde diferentes puntos de vista para conocer el show,
-        el equipo y los aparatos.
-      </p>
+      <h2 id="view-title">{messages.panel.introTitle}</h2>
+      <p id="view-description">{messages.panel.introDescription}</p>
+
+      <!-- Formulario de contacto (solo en vista "contacto") -->
+      <form id="contact-form" class="contact-form" style="display:none;">
+        <div class="form-group">
+          <label id="label-name" for="contact-name">
+            {messages.contact.form.nameLabel}
+          </label>
+          <input id="contact-name" name="name" type="text" required />
+        </div>
+
+        <div class="form-group">
+          <label id="label-email" for="contact-email">
+            {messages.contact.form.emailLabel}
+          </label>
+          <input id="contact-email" name="email" type="email" required />
+        </div>
+
+        <div class="form-group">
+          <label id="label-event" for="contact-type">
+            {messages.contact.form.eventTypeLabel}
+          </label>
+          <select id="contact-type" name="eventType">
+            <option id="opt-show" value="show">
+              {messages.contact.eventTypes.show}
+            </option>
+            <option id="opt-corp" value="corporativo">
+              {messages.contact.eventTypes.corporativo}
+            </option>
+            <option id="opt-fest" value="festival">
+              {messages.contact.eventTypes.festival}
+            </option>
+            <option id="opt-other" value="otro">
+              {messages.contact.eventTypes.otro}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label id="label-msg" for="contact-message">
+            {messages.contact.form.messageLabel}
+          </label>
+          <textarea
+            id="contact-message"
+            name="message"
+            rows="3"
+            placeholder={messages.contact.form.messagePlaceholder}
+            required
+          ></textarea>
+        </div>
+
+        <button id="submit-btn" type="submit" class="contact-submit">
+          {messages.contact.form.submit}
+        </button>
+
+        <div class="contact-extra">
+          <p id="extra-text">{messages.contact.extra.alsoText}</p>
+          <ul class="contact-extra-list">
+            <li>
+              <strong id="extra-phone-label">
+                {messages.contact.extra.phoneLabel}:
+              </strong>
+              {` ${messages.contact.extra.phoneValue}`}
+            </li>
+            <li>
+              <strong id="extra-email-label">
+                {messages.contact.extra.emailLabel}:
+              </strong>
+              {` ${messages.contact.extra.emailValue}`}
+            </li>
+          </ul>
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -52,13 +138,23 @@
     gap: 1rem;
     align-items: flex-start;
     z-index: 10;
-    pointer-events: none; /* los hijos pueden habilitarlo */
+    pointer-events: none;
+  }
+
+  .lang-switcher {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid #ffffff33;
+    color: #fff;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
   }
 
   .view-buttons {
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
+    margin-left: 0.5rem;
     pointer-events: auto;
   }
 
@@ -78,7 +174,7 @@
 
   .view-panel {
     margin-left: auto;
-    max-width: 320px;
+    max-width: 340px;
     background: rgba(0, 0, 0, 0.65);
     border: 1px solid #ffffff22;
     border-radius: 0.75rem;
@@ -95,73 +191,172 @@
   }
 
   .view-panel p {
-    margin: 0;
+    margin: 0 0 0.5rem 0;
     line-height: 1.4;
+  }
+
+  .contact-form {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .form-group label {
+    font-size: 0.8rem;
+    color: #e5e7eb;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    border-radius: 0.5rem;
+    border: 1px solid #4b5563;
+    background: rgba(15, 23, 42, 0.9);
+    color: #f9fafb;
+    padding: 0.35rem 0.5rem;
+    font-size: 0.85rem;
+    outline: none;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: #f97316;
+  }
+
+  .contact-submit {
+    margin-top: 0.25rem;
+    background: linear-gradient(90deg, #f97316, #ec4899);
+    border: none;
+    border-radius: 999px;
+    color: #111827;
+    font-weight: 600;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    align-self: flex-end;
+  }
+
+  .contact-submit:hover {
+    opacity: 0.9;
+  }
+
+  .contact-extra {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #e5e7eb;
+  }
+
+  .contact-extra-text {
+    margin: 0 0 0.2rem 0;
+  }
+
+  .contact-extra-list {
+    margin: 0;
+    padding-left: 1rem;
   }
 </style>
 
 <script>
   import { initThreeScene } from '../three/initScene.js';
+  import es from '../i18n/es.json';
+  import en from '../i18n/en.json';
 
-  const VIEW_CONTENT = {
-    center: {
-      title: 'Flying Cáceres 3D',
-      description:
-        'Vista general del circo. Desde aquí puedes saltar a las distintas áreas para conocer el show, el equipo y los aparatos.',
-    },
-    trapecio: {
-      title: 'Plataforma del trapecio',
-      description:
-        'La vista de los volantes. Aquí destacaremos los actos de alto vuelo, el triple y el cruce, y la esencia del show.',
-    },
-    publico: {
-      title: 'Desde el público',
-      description:
-        'Vista pensada para mostrar los videos del show alojados en AWS y cómo vive el espectáculo la audiencia.',
-    },
-    entrada: {
-      title: 'Entrada del circo',
-      description:
-        'Sección para presentar al fundador y la historia de The Flying Cáceres, como un gran cuadro en la entrada.',
-    },
-    vestidores: {
-      title: 'Vestidores y backstage',
-      description:
-        'Espacio para hablar del vestuario, la preparación del equipo y el trabajo detrás del escenario.',
-    },
-    equipos: {
-      title: 'Aparatos y equipos',
-      description:
-        'Aquí describiremos los trapecios, estructuras y servicios técnicos que ofrece Flying Cáceres.',
-    },
-    utileria: {
-      title: 'Utilería y extras',
-      description:
-        'Zona para FAQ, presskit, materiales para producción y otros recursos adicionales.',
-    },
-    contacto: {
-      title: 'Contacto y contrataciones',
-      description:
-        'Aquí irá el formulario de contacto para productores y eventos: datos básicos, tipo de espectáculo, fechas y detalles técnicos.',
-    },
+  const messagesByLang = { es, en };
+  let currentLang = localStorage.getItem('fc_lang') || 'es';
 
-  };
+  function updateLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('fc_lang', lang);
+    const T = messagesByLang[lang];
+
+    // Botones
+    document.querySelector('[data-view="center"]').textContent =
+      T.buttons.center;
+    document.querySelector('[data-view="trapecio"]').textContent =
+      T.buttons.trapecio;
+    document.querySelector('[data-view="publico"]').textContent =
+      T.buttons.publico;
+    document.querySelector('[data-view="entrada"]').textContent =
+      T.buttons.entrada;
+    document.querySelector('[data-view="vestidores"]').textContent =
+      T.buttons.vestidores;
+    document.querySelector('[data-view="equipos"]').textContent =
+      T.buttons.equipos;
+    document.querySelector('[data-view="utileria"]').textContent =
+      T.buttons.utileria;
+    document.querySelector('[data-view="contacto"]').textContent =
+      T.buttons.contacto;
+
+    // Vista actual
+    const currentView = window.__currentView || 'center';
+    const viewData = T.views[currentView];
+
+    document.getElementById('view-title').textContent = viewData.title;
+    document.getElementById('view-description').textContent =
+      viewData.description;
+
+    // Formulario
+    document.getElementById('label-name').textContent =
+      T.contact.form.nameLabel;
+    document.getElementById('label-email').textContent =
+      T.contact.form.emailLabel;
+    document.getElementById('label-event').textContent =
+      T.contact.form.eventTypeLabel;
+    document.getElementById('label-msg').textContent =
+      T.contact.form.messageLabel;
+
+    document.getElementById('opt-show').textContent =
+      T.contact.eventTypes.show;
+    document.getElementById('opt-corp').textContent =
+      T.contact.eventTypes.corporativo;
+    document.getElementById('opt-fest').textContent =
+      T.contact.eventTypes.festival;
+    document.getElementById('opt-other').textContent =
+      T.contact.eventTypes.otro;
+
+    document.getElementById('contact-message').placeholder =
+      T.contact.form.messagePlaceholder;
+
+    document.getElementById('submit-btn').textContent =
+      T.contact.form.submit;
+
+    document.getElementById('extra-text').textContent =
+      T.contact.extra.alsoText;
+    document.getElementById('extra-phone-label').textContent =
+      T.contact.extra.phoneLabel + ':';
+    document.getElementById('extra-email-label').textContent =
+      T.contact.extra.emailLabel + ':';
+  }
 
   if (typeof window !== 'undefined') {
     window.addEventListener('DOMContentLoaded', () => {
       const canvas = document.getElementById('three-canvas');
-      if (canvas) {
-        initThreeScene(canvas);
-      }
+      if (canvas) initThreeScene(canvas);
 
       const buttons = document.querySelectorAll('.view-buttons [data-view]');
-      const titleEl = document.getElementById('view-title');
-      const descEl = document.getElementById('view-description');
+      const contactForm = document.getElementById('contact-form');
+      const langSelect = document.getElementById('lang-switcher');
+
+      langSelect.value = currentLang;
 
       function updatePanel(viewName) {
-        const content = VIEW_CONTENT[viewName] ?? VIEW_CONTENT.center;
-        titleEl.textContent = content.title;
-        descEl.textContent = content.description;
+        window.__currentView = viewName;
+        const T = messagesByLang[currentLang];
+        const viewData = T.views[viewName] || T.views.center;
+
+        document.getElementById('view-title').textContent = viewData.title;
+        document.getElementById('view-description').textContent =
+          viewData.description;
+
+        contactForm.style.display = viewName === 'contacto' ? 'flex' : 'none';
       }
 
       buttons.forEach((btn) => {
@@ -174,7 +369,22 @@
         });
       });
 
-      // vista inicial
+      if (contactForm) {
+        contactForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const T = messagesByLang[currentLang];
+          const formData = new FormData(contactForm);
+          console.log('Contacto enviado:', Object.fromEntries(formData));
+          alert(T.contact.form.successMessage);
+          contactForm.reset();
+        });
+      }
+
+      langSelect.addEventListener('change', (e) =>
+        updateLanguage(e.target.value)
+      );
+
+      updateLanguage(currentLang);
       updatePanel('center');
     });
   }
