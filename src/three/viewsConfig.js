@@ -1,23 +1,31 @@
 // src/three/viewsConfig.js
 export const viewsConfig = {
   center: {
-    // vista general del ring
-    position: [0, 3, 8],
-    lookAt: [0, 1, 0],
+    position: [0, 5, 14],
+    lookAt: [0, 1.5, 0],
   },
   trapecio: {
-    // como si estuvieras en la plataforma
-    position: [0, 6, 2],
-    lookAt: [0, 3, 0],
+    position: [0, 8, 3],
+    lookAt: [0, 4, 0],
   },
   publico: {
-    // desde las gradas, mirando al escenario
-    position: [0, 2, -8],
+    position: [0, 3, -12],
     lookAt: [0, 2, 0],
   },
   entrada: {
-    // cerca de la entrada al circo
-    position: [-8, 2, 4],
-    lookAt: [0, 1, 0],
+    position: [-15, 1, 5],
+    lookAt: [1, 3, 3],
+  },
+  vestidores: {
+    position: [14, 3, 4],
+    lookAt: [8, 2, 4],
+  },
+  equipos: {
+    position: [0, 2, 23],
+    lookAt: [0, 2, 8],
+  },
+  utileria: {
+    position: [-10, 4, -10],
+    lookAt: [-6, 2, -6],
   },
 };

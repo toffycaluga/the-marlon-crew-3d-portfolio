@@ -1,43 +1,149 @@
-# Astro Starter Kit: Minimal
+# 🎪 Flying Cáceres – 3D Circus Portfolio
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Portafolio interactivo para **The Flying Cáceres**, donde el usuario recorre un circo en 3D y, desde diferentes puntos de vista, descubre la historia, el equipo, los aparatos, los videos y la información de contacto de la troupe.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+La experiencia se construye sobre **Astro.js** (como framework principal) y **Three.js** (para la escena 3D).
 
-## 🚀 Project Structure
+---
 
-Inside of your Astro project, you'll see the following folders and files:
+## 🎯 Objetivo
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+Crear una experiencia web inmersiva donde:
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+- El visitante recorra un circo virtual.
+- Cada vista represente una sección clave del proyecto Flying Cáceres.
+- Todo el contenido esté disponible en múltiples idiomas (ES/EN en la versión inicial).
+- Se puedan destacar:
+  - El fundador,
+  - Los equipos,
+  - La confección de aparatos y vestuario,
+  - El show (videos alojados en AWS),
+  - Información técnica para productores.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+---
 
-Any static assets, like images, can be placed in the `public/` directory.
+## 🧭 Vistas 3D y secciones
 
-## 🧞 Commands
+La aplicación tendrá **una única escena 3D** con varios puntos de vista (presets de cámara):
 
-All commands are run from the root of the project, from a terminal:
+1. **Plataforma del trapecio (`trapecio`)**
+   - Rol: Landing principal / Acts highlight.
+   - Cámara elevada mirando al interior de la carpa.
+   - Contenido:
+     - Presentación corta de The Flying Cáceres.
+     - Enfoque en el triple y el cruce.
+     - CTAs hacia: “Ver el show” (vista público) y “Conocer al fundador” (entrada).
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+2. **Vestidores (`vestidores`)**
+   - Rol: Backstage humano y vestuario.
+   - Escena con percheros y trajes simplificados.
+   - Contenido:
+     - Información sobre confección de vestuario.
+     - Presentación del equipo artístico y técnico.
 
-## 👀 Want to learn more?
+3. **Desde el público (`publico`)**
+   - Rol: Showreel principal (videos desde AWS).
+   - Cámara en las gradas mirando al escenario.
+   - Contenido:
+     - Galería de videos (promos, actos, highlight reels).
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+4. **Equipos (`equipos`)**
+   - Rol: Aparatos, fabricación y seguridad.
+   - Escena con estructuras y elementos técnicos.
+   - Contenido:
+     - Listado de aparatos y servicios.
+     - Información de seguridad y estándares técnicos.
+
+5. **Entrada del circo (`entrada`)**
+   - Rol: About / Founder.
+   - Escena con la entrada de la carpa y un cuadro del fundador.
+   - Contenido:
+     - Bio del fundador.
+     - Historia breve de la troupe.
+
+6. **Utilería (`utileria`)**
+   - Rol: Extras, FAQ y press kit.
+   - Escena con cajas y elementos de backstage.
+   - Contenido:
+     - FAQ para productores.
+     - Links a press kit, fotos y redes sociales.
+
+7. **Pantalla de carga (`loading`)**
+   - Rol: Experiencia de inicio + carga real de assets.
+   - Visual: carpa o telón cerrado, barra de progreso.
+   - Conectado al `LoadingManager` de Three.js.
+
+---
+
+## 🌐 Multiidioma (i18n)
+
+- Versión inicial: **ES** y **EN**.
+- Futuro: DE, IT, FR, ZH.
+
+Estrategia:
+
+- Archivos JSON por idioma:
+  - `src/i18n/es.json`
+  - `src/i18n/en.json`
+- Claves organizadas por:
+  - `global.*` (títulos, menú, footer),
+  - `views.*` (textos por vista),
+  - `content.*` (biografías, descripciones más largas).
+- Switch de idioma en la UI (ES/EN) que:
+  - Actualiza el `lang` actual.
+  - Re-renderiza los textos visibles.
+
+---
+
+## 🧱 Stack técnico
+
+- **Astro.js**: estructura del proyecto, routing y renderizado de contenido.
+- **Three.js**: escena 3D, cámaras, luces y geometrías.
+- **Vite (interno de Astro)**: bundling.
+- **CSS / Tailwind (opcional)**: estilado de la UI 2D (paneles, menús, botones).
+- **AWS S3 / CloudFront**: almacenamiento de videos (integraremos las URLs en la vista “Desde el público”).
+
+---
+
+## 🗺️ Roadmap de desarrollo
+
+### Fase 1 – Diseño y estructura (sin Blender)
+
+1. Definir contenido por vista (textos, imágenes, videos AWS).
+2. Implementar estructura base en Astro:
+   - Ruta `/` como experiencia principal.
+3. Crear componente `<ThreeScene />`:
+   - Escena, cámara, renderer.
+   - Geometrías básicas para las zonas del circo.
+4. Definir presets de cámara para cada vista y sistema de cambio de vista.
+
+### Fase 2 – i18n y contenido real
+
+1. Crear `es.json` y `en.json` con todo el texto.
+2. Integrar un sistema simple de traducción (`t()`).
+3. Conectar cada vista a su contenido traducible.
+4. Integrar videos de AWS en la vista “Desde el público”.
+
+### Fase 3 – Mejora visual y animaciones
+
+1. Añadir luces, efectos y pequeñas animaciones de cámara.
+2. Agregar partículas / efectos para reforzar la sensación de show.
+3. Implementar pantalla de carga real con `LoadingManager`.
+
+### Fase 4 – Blender (opcional, fase avanzada)
+
+1. Modelar carpa low poly y algunos aparatos en Blender.
+2. Exportar a GLB/GLTF.
+3. Cargar modelos con `GLTFLoader` y reemplazar geometrías básicas.
+
+---
+
+## ✅ Objetivo de la primera versión (MVP)
+
+- Home `/` con:
+  - Escena 3D básica.
+  - 4–5 vistas funcionales (cambio de cámara).
+  - Textos en ES/EN.
+  - Al menos 1 video funcional desde AWS.
+- Interfaz clara para navegar entre:
+  - Acts, founder, equipos, videos y contacto (aunque sea minimalista).

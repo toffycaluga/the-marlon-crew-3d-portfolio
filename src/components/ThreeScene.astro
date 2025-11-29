@@ -5,10 +5,23 @@
   <canvas id="three-canvas"></canvas>
 
   <div class="overlay-ui">
-    <button data-view="center">Vista general</button>
-    <button data-view="trapecio">Trapecio</button>
-    <button data-view="publico">Público</button>
-    <button data-view="entrada">Entrada</button>
+    <div class="view-buttons">
+      <button data-view="center">Vista general</button>
+      <button data-view="trapecio">Trapecio</button>
+      <button data-view="publico">Público</button>
+      <button data-view="entrada">Entrada</button>
+      <button data-view="vestidores">Vestidores</button>
+      <button data-view="equipos">Equipos</button>
+      <button data-view="utileria">Utilería</button>
+    </div>
+
+    <div class="view-panel" id="view-panel">
+      <h2 id="view-title">Flying Cáceres 3D</h2>
+      <p id="view-description">
+        Recorre el circo desde diferentes puntos de vista para conocer el show,
+        el equipo y los aparatos.
+      </p>
+    </div>
   </div>
 </div>
 
@@ -20,6 +33,7 @@
     padding: 0;
     overflow: hidden;
     position: relative;
+    background: #050509;
   }
 
   #three-canvas {
@@ -32,29 +46,99 @@
     position: absolute;
     top: 1rem;
     left: 1rem;
+    right: 1rem;
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
+    align-items: flex-start;
     z-index: 10;
+    pointer-events: none; /* los hijos pueden habilitarlo */
   }
 
-  .overlay-ui button {
+  .view-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    pointer-events: auto;
+  }
+
+  .view-buttons button {
     background: rgba(0, 0, 0, 0.7);
     border: 1px solid #ffffff33;
     color: #f5f5f5;
-    padding: 0.35rem 0.75rem;
-    font-size: 0.85rem;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
     border-radius: 999px;
     cursor: pointer;
   }
 
-  .overlay-ui button:hover {
-    background: rgba(255, 255, 255, 0.1);
+  .view-buttons button:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .view-panel {
+    margin-left: auto;
+    max-width: 320px;
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid #ffffff22;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: #f9fafb;
+    font-size: 0.9rem;
+    backdrop-filter: blur(8px);
+    pointer-events: auto;
+  }
+
+  .view-panel h2 {
+    margin: 0 0 0.4rem 0;
+    font-size: 1rem;
+  }
+
+  .view-panel p {
+    margin: 0;
+    line-height: 1.4;
   }
 </style>
 
 <script>
-  import { initThreeScene } from '../three/initScene.js'; // o '@/three/...' si tienes alias
+  import { initThreeScene } from '../three/initScene.js';
+
+  const VIEW_CONTENT = {
+    center: {
+      title: 'Flying Cáceres 3D',
+      description:
+        'Vista general del circo. Desde aquí puedes saltar a las distintas áreas para conocer el show, el equipo y los aparatos.',
+    },
+    trapecio: {
+      title: 'Plataforma del trapecio',
+      description:
+        'La vista de los volantes. Aquí destacaremos los actos de alto vuelo, el triple y el cruce, y la esencia del show.',
+    },
+    publico: {
+      title: 'Desde el público',
+      description:
+        'Vista pensada para mostrar los videos del show alojados en AWS y cómo vive el espectáculo la audiencia.',
+    },
+    entrada: {
+      title: 'Entrada del circo',
+      description:
+        'Sección para presentar al fundador y la historia de The Flying Cáceres, como un gran cuadro en la entrada.',
+    },
+    vestidores: {
+      title: 'Vestidores y backstage',
+      description:
+        'Espacio para hablar del vestuario, la preparación del equipo y el trabajo detrás del escenario.',
+    },
+    equipos: {
+      title: 'Aparatos y equipos',
+      description:
+        'Aquí describiremos los trapecios, estructuras y servicios técnicos que ofrece Flying Cáceres.',
+    },
+    utileria: {
+      title: 'Utilería y extras',
+      description:
+        'Zona para FAQ, presskit, materiales para producción y otros recursos adicionales.',
+    },
+  };
 
   if (typeof window !== 'undefined') {
     window.addEventListener('DOMContentLoaded', () => {
@@ -63,15 +147,28 @@
         initThreeScene(canvas);
       }
 
-      const buttons = document.querySelectorAll('.overlay-ui [data-view]');
+      const buttons = document.querySelectorAll('.view-buttons [data-view]');
+      const titleEl = document.getElementById('view-title');
+      const descEl = document.getElementById('view-description');
+
+      function updatePanel(viewName) {
+        const content = VIEW_CONTENT[viewName] ?? VIEW_CONTENT.center;
+        titleEl.textContent = content.title;
+        descEl.textContent = content.description;
+      }
+
       buttons.forEach((btn) => {
         btn.addEventListener('click', () => {
           const view = btn.getAttribute('data-view');
           if (window.setThreeView && view) {
             window.setThreeView(view);
+            updatePanel(view);
           }
         });
       });
+
+      // vista inicial
+      updatePanel('center');
     });
   }
 </script>
