@@ -8,6 +8,17 @@ import { createCircusBase } from "./elements/base.js";
 import { createStage } from "./elements/stage.js";
 import { createGallery } from "./elements/gallery.js";
 import { createCircusTowers } from "./elements/towers.js";
+import { createDomeTruss } from "./elements/dome.js";
+import { createRectangularTruss } from "./elements/rectTruss.js";
+import { createTrapezePlatform } from "./elements/trapezePlatform.js";
+import { createStrongBar } from "./elements/strongBar.js";
+import { createTrapezeBar } from "./elements/trapezeBar.js";
+
+
+
+
+
+
 
 
 export function initThreeScene(canvas) {
@@ -27,8 +38,13 @@ export function initThreeScene(canvas) {
   scene.add(createStage());
   scene.add(createGallery());
   scene.add(createCircusTowers());
+  scene.add(createDomeTruss());
+  scene.add(createRectangularTruss());
+  scene.add(createTrapezePlatform());
+  scene.add(createStrongBar());
+  scene.add(createTrapezeBar());
 
-  
+
   function animate() {
     requestAnimationFrame(animate);
     controls.update();
