@@ -102,7 +102,7 @@ export function createGallery() {
   });
 
   for (let i = 0; i < GALLERY.tiers; i++) {
-    const inner = STAGE.radius + 1.2 + i * (GALLERY.ringWidth + GALLERY.gap);
+    const inner = STAGE.radius + 1.5 + i * (GALLERY.ringWidth + GALLERY.gap);
     const outer = inner + GALLERY.ringWidth;
     if (outer >= CIRCUS.radius) break;
 

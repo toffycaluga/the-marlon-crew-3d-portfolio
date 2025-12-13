@@ -7,6 +7,8 @@ import { createLights } from "./lights.js";
 import { createCircusBase } from "./elements/base.js";
 import { createStage } from "./elements/stage.js";
 import { createGallery } from "./elements/gallery.js";
+import { createCircusTowers } from "./elements/towers.js";
+
 
 export function initThreeScene(canvas) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
@@ -24,7 +26,9 @@ export function initThreeScene(canvas) {
   scene.add(createCircusBase());
   scene.add(createStage());
   scene.add(createGallery());
+  scene.add(createCircusTowers());
 
+  
   function animate() {
     requestAnimationFrame(animate);
     controls.update();
