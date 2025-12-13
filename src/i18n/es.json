@@ -15,7 +15,7 @@
   },
   "views": {
     "center": {
-      "title": "The Flying Marlon Caceres",
+      "title": "The Flying Marlon Cáceres",
       "description": "Arte, precisión y confianza en las alturas. Desde aquí puedes moverte por el circo para descubrir al director, la troupe, los equipos y el vestuario."
     },
     "trapecio": {
@@ -27,7 +27,7 @@
       "description": "Vista pensada para mostrar los videos del show, highlight reels y material promocional para festivales, teatros y grandes eventos."
     },
     "entrada": {
-      "title": "Nuestro Director – Marlon Joel Caceres",
+      "title": "Nuestro Director – Marlon Joel Cáceres",
       "description": "Con 28 años, es el corazón creativo de la troupe: director y trapecista que lleva el arte del trapecio a nuevas alturas, combinando innovación visual y audacia escénica, con experiencia en más de 25 países."
     },
     "vestidores": {
@@ -70,5 +70,9 @@
       "phoneValue": "+49 1521 6880781",
       "emailValue": "marlonceresgonzalez@gmail.com"
     }
+  },
+  "loader": {
+    "loading": "Cargando escena 3D…",
+    "ready": "Escena lista"
   }
 }

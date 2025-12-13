@@ -1,18 +1,19 @@
 ---
 import es from '../i18n/es.json';
 import en from '../i18n/en.json';
+import LoadingScreen from './LoadingScreen.astro';
 
-// Idioma inicial (por ahora fijo, luego usamos localStorage si quieres)
 const initialLang = 'es';
 const messagesByLang = { es, en };
 const messages = messagesByLang[initialLang];
 ---
 
 <div class="three-wrapper">
+  <LoadingScreen />
+
   <canvas id="three-canvas"></canvas>
 
   <div class="overlay-ui">
-    <!-- Selector de idioma -->
     <select
       id="lang-switcher"
       class="lang-switcher"
@@ -37,7 +38,6 @@ const messages = messagesByLang[initialLang];
       <h2 id="view-title">{messages.panel.introTitle}</h2>
       <p id="view-description">{messages.panel.introDescription}</p>
 
-      <!-- Formulario de contacto (solo en vista "contacto") -->
       <form id="contact-form" class="contact-form" style="display:none;">
         <div class="form-group">
           <label id="label-name" for="contact-name">
@@ -166,10 +166,19 @@ const messages = messagesByLang[initialLang];
     font-size: 0.8rem;
     border-radius: 999px;
     cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease,
+      border-color 0.2s ease;
   }
 
   .view-buttons button:hover {
     background: rgba(255, 255, 255, 0.12);
+  }
+
+  .view-buttons button.active {
+    background: #f97316;
+    border-color: #f97316;
+    color: #111827;
+    transform: translateY(-1px);
   }
 
   .view-panel {
@@ -183,6 +192,12 @@ const messages = messagesByLang[initialLang];
     font-size: 0.9rem;
     backdrop-filter: blur(8px);
     pointer-events: auto;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .view-panel.is-updating {
+    opacity: 0;
+    transform: translateY(4px);
   }
 
   .view-panel h2 {
@@ -254,138 +269,27 @@ const messages = messagesByLang[initialLang];
     color: #e5e7eb;
   }
 
-  .contact-extra-text {
-    margin: 0 0 0.2rem 0;
-  }
-
   .contact-extra-list {
     margin: 0;
     padding-left: 1rem;
   }
 </style>
 
-<script>
-  import { initThreeScene } from '../three/initScene.js';
-  import es from '../i18n/es.json';
-  import en from '../i18n/en.json';
-
-  const messagesByLang = { es, en };
-  let currentLang = localStorage.getItem('fc_lang') || 'es';
-
-  function updateLanguage(lang) {
-    currentLang = lang;
-    localStorage.setItem('fc_lang', lang);
-    const T = messagesByLang[lang];
-
-    // Botones
-    document.querySelector('[data-view="center"]').textContent =
-      T.buttons.center;
-    document.querySelector('[data-view="trapecio"]').textContent =
-      T.buttons.trapecio;
-    document.querySelector('[data-view="publico"]').textContent =
-      T.buttons.publico;
-    document.querySelector('[data-view="entrada"]').textContent =
-      T.buttons.entrada;
-    document.querySelector('[data-view="vestidores"]').textContent =
-      T.buttons.vestidores;
-    document.querySelector('[data-view="equipos"]').textContent =
-      T.buttons.equipos;
-    document.querySelector('[data-view="utileria"]').textContent =
-      T.buttons.utileria;
-    document.querySelector('[data-view="contacto"]').textContent =
-      T.buttons.contacto;
-
-    // Vista actual
-    const currentView = window.__currentView || 'center';
-    const viewData = T.views[currentView];
-
-    document.getElementById('view-title').textContent = viewData.title;
-    document.getElementById('view-description').textContent =
-      viewData.description;
-
-    // Formulario
-    document.getElementById('label-name').textContent =
-      T.contact.form.nameLabel;
-    document.getElementById('label-email').textContent =
-      T.contact.form.emailLabel;
-    document.getElementById('label-event').textContent =
-      T.contact.form.eventTypeLabel;
-    document.getElementById('label-msg').textContent =
-      T.contact.form.messageLabel;
-
-    document.getElementById('opt-show').textContent =
-      T.contact.eventTypes.show;
-    document.getElementById('opt-corp').textContent =
-      T.contact.eventTypes.corporativo;
-    document.getElementById('opt-fest').textContent =
-      T.contact.eventTypes.festival;
-    document.getElementById('opt-other').textContent =
-      T.contact.eventTypes.otro;
-
-    document.getElementById('contact-message').placeholder =
-      T.contact.form.messagePlaceholder;
-
-    document.getElementById('submit-btn').textContent =
-      T.contact.form.submit;
-
-    document.getElementById('extra-text').textContent =
-      T.contact.extra.alsoText;
-    document.getElementById('extra-phone-label').textContent =
-      T.contact.extra.phoneLabel + ':';
-    document.getElementById('extra-email-label').textContent =
-      T.contact.extra.emailLabel + ':';
-  }
+<script type="module">
+  import { initThreeScene } from '/src/three/initScene.js';
+  import { initI18nState } from '/src/scripts/i18nState.js';
+  import { initUI } from '/src/scripts/uiController.js';
+  import { initLoader } from '/src/scripts/loader.js';
 
   if (typeof window !== 'undefined') {
     window.addEventListener('DOMContentLoaded', () => {
       const canvas = document.getElementById('three-canvas');
-      if (canvas) initThreeScene(canvas);
+      if (!canvas) return;
 
-      const buttons = document.querySelectorAll('.view-buttons [data-view]');
-      const contactForm = document.getElementById('contact-form');
-      const langSelect = document.getElementById('lang-switcher');
-
-      langSelect.value = currentLang;
-
-      function updatePanel(viewName) {
-        window.__currentView = viewName;
-        const T = messagesByLang[currentLang];
-        const viewData = T.views[viewName] || T.views.center;
-
-        document.getElementById('view-title').textContent = viewData.title;
-        document.getElementById('view-description').textContent =
-          viewData.description;
-
-        contactForm.style.display = viewName === 'contacto' ? 'flex' : 'none';
-      }
-
-      buttons.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const view = btn.getAttribute('data-view');
-          if (window.setThreeView && view) {
-            window.setThreeView(view);
-            updatePanel(view);
-          }
-        });
-      });
-
-      if (contactForm) {
-        contactForm.addEventListener('submit', (event) => {
-          event.preventDefault();
-          const T = messagesByLang[currentLang];
-          const formData = new FormData(contactForm);
-          console.log('Contacto enviado:', Object.fromEntries(formData));
-          alert(T.contact.form.successMessage);
-          contactForm.reset();
-        });
-      }
-
-      langSelect.addEventListener('change', (e) =>
-        updateLanguage(e.target.value)
-      );
-
-      updateLanguage(currentLang);
-      updatePanel('center');
+      initI18nState();
+      initLoader();
+      initUI();
+      initThreeScene(canvas);
     });
   }
 </script>
