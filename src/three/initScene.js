@@ -13,6 +13,15 @@ import { createRectangularTruss } from "./elements/rectTruss.js";
 import { createTrapezePlatform } from "./elements/trapezePlatform.js";
 import { createStrongBar } from "./elements/strongBar.js";
 import { createTrapezeBar } from "./elements/trapezeBar.js";
+import { createSafetyNetBase } from "./elements/safetyNetBase.js";
+import { createSafetyNetSides } from "./elements/safetyNetSides.js";
+import { createSafetyNetLaterals } from "./elements/safetyNetLaterals.js";
+import { createSafetyNetLateralsAnchored } from "./elements/safetyNetLateralsAnchored.js";
+import { createSafetyNetWalls } from "./elements/safetyNetWalls.js";
+
+
+
+
 
 
 
@@ -43,6 +52,12 @@ export function initThreeScene(canvas) {
   scene.add(createTrapezePlatform());
   scene.add(createStrongBar());
   scene.add(createTrapezeBar());
+  scene.add(createSafetyNetBase());
+  scene.add(createSafetyNetSides());
+  // scene.add(createSafetyNetLaterals());
+  
+  // scene.add(createSafetyNetLateralsAnchored());
+  scene.add(createSafetyNetWalls());
 
 
   function animate() {

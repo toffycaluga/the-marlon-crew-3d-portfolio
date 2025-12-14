@@ -34,7 +34,7 @@ function createLadderTrussPanel({
   const g = new THREE.Group();
 
   const mat = new THREE.MeshStandardMaterial({
-    color: 0xd1d5db,
+    color: TRAPEZE_PLATFORM.escaleraColor,
     roughness: 0.35,
     metalness: 0.85,
   });
@@ -82,7 +82,7 @@ export function createTrapezePlatform() {
   const module = new THREE.Group();
 
   const matPlatform = new THREE.MeshStandardMaterial({
-    color: 0x111827,
+    color: TRAPEZE_PLATFORM.baseColor,
     roughness: 0.6,
     metalness: 0.15,
   });

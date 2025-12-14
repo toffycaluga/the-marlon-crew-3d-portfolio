@@ -26,13 +26,13 @@ export function createTrapezeBar() {
   const group = new THREE.Group();
 
   const ropeMat = new THREE.MeshStandardMaterial({
-    color: 0xf5f5f4,
+    color: TRAPEZE_BAR.ropeColor,
     roughness: 0.9,
     metalness: 0.05,
   });
 
   const barMat = new THREE.MeshStandardMaterial({
-    color: 0xcbd5e1,
+    color: TRAPEZE_BAR.barColor,
     roughness: 0.35,
     metalness: 0.85,
   });

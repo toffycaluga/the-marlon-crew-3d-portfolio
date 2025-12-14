@@ -77,6 +77,8 @@ export const RECT_TRUSS = {
 
 
 export const TRAPEZE_PLATFORM = {
+  baseColor:0xf3f3f3,
+  escaleraColor:0xf1f1f1,
   totalLength: 1.2,
   width: 3.5,
   thickness: 0.15,
@@ -112,10 +114,12 @@ export const TRAPEZE_PLATFORM = {
 
 
 export const STRONG_BAR = {
+  barColor: 0xffffff,
+  ropeColor: 0xff5522,
   ropeLength: 4.0,      // metros
   barWidth: 0.80,       // metros (tubo)
   barRadius: 0.03,      // grosor del tubo (3 cm)
-  ropeRadius: 0.015,    // grosor cuerda (1.5 cm)
+  ropeRadius: 0.035,    // grosor cuerda (1.5 cm)
 
   // dónde cuelga desde (por ahora desde la cúpula/truss superior)
   hangHeight: 13.7,     // punto superior donde cuelgan las cuerdas
@@ -134,10 +138,12 @@ export const STRONG_BAR = {
 
 // fuerte a volante :8.5 , 3.75 largo fuerte ; 3,65 tiro volante
 export const TRAPEZE_BAR = {
+  barColor: 0xffffff,
+  ropeColor: 0xffffff,
   ropeLength: 2,
   barWidth: 0.80,
   barRadius: 0.03,
-  ropeRadius: 0.015,
+  ropeRadius: 0.035,
 
   // anclaje superior (centro)
   anchor: {
@@ -159,3 +165,102 @@ export const TRAPEZE_BAR = {
   // ✅ orientación (igual lógica que STRONG_BAR)
   angle: -Math.PI,
 };
+
+
+export const SAFETY_NET = {
+  frame: {
+    length: 14.0,
+    width: 7.0,
+    tubeRadius: 0.007,
+    y: 5.0,
+  },
+
+  net: {
+    drop: 0.2,
+    subdivisionsX: 50,
+    subdivisionsZ: 40,
+    opacity: 0.08,
+    wireframe: true,
+  },
+
+  laterals: {
+    drop: 1.2,
+    subdivisionsX: 18,
+    subdivisionsZ: 10,
+
+    // ✅ Red lateral A (9m)
+    left: {
+      length: 9.0,
+
+      // offsets (mueves esta red sin afectar la otra)
+      offset: { x: -12, y: 10, z: 10 },
+
+      // rotación (la clave para orientar dónde “apunta”)
+      rotation: { x: 0, y: 0, z: 0 },
+    },
+
+    // ✅ Red lateral B (11m)
+    right: {
+      length: 11.0,
+      offset: { x: 0, y: 0, z: 0 },
+      rotation: { x: 0, y: 0, z: 0 },
+    },
+  },
+};
+
+// export const SAFETY_NET_LATERALS = {
+//   // Material / malla
+//   opacity: 0.28,
+//   wireframe: true,
+//   drop: 1.2,        // caída visual (solo deformación)
+//   subdivisionsU: 20,
+//   subdivisionsV: 10,
+
+//   // Lateral A (9m)
+//   left: {
+//     outLength: 5.0,
+
+//     // Línea de anclaje (pegada al borde del marco/red principal)
+//     anchorStart: { x: -13, y: 11.0, z: 0 },
+//     anchorEnd:   { x:  -7.2, y: 5.5, z: 2.5 },
+
+//     // Hacia dónde va la punta exterior (control tipo "barOffset")
+//     // (si pones solo z negativo, sale recta; si metes x también, queda diagonal)
+//     outOffset: { x: 0.0, y: 0.0, z: -5.0 },
+//   },
+
+//   // Lateral B (11m)
+//   right: {
+//     outLength: 11.0,
+//     anchorStart: { x: -7, y: 3.0, z:  2.5 },
+//     anchorEnd:   { x:  7, y: 3.0, z:  2.5 },
+//     outOffset: { x: 0.0, y: 0.0, z: 11.0 },
+//   },
+// };
+
+
+export const SAFETY_NET_LATERALS = {
+  opacity: 0.08,
+  wireframe: true,
+  subdivisionsU: 50,
+  subdivisionsV: 40,
+
+  // ✅ Pared en la punta X negativa (izquierda del largo)
+  endA: {
+    height: 7.0,                 // 9m
+    topOffset: { x: -7, z: 0 },    // opcional (inclinar arriba)
+  },
+
+  // ✅ Pared en la punta X positiva (derecha del largo)
+  endB: {
+    height: 6.0,                // 11m
+    topOffset: { x: 7, z: 0 },
+  },
+   // ✅ NUEVA: pared corta desde el “final” de endB
+  // ✅ NUEVO: extensión desde ARRIBA de endB
+  endBTopExtension: {
+    height: 3.5,           // sube 4m más desde el borde superior
+    topOffset: { x: -5, z: 0 }, // opcional (inclinar arriba sin torcer)
+  },
+};
+
