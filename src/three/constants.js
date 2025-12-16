@@ -12,13 +12,58 @@ export const STAGE = {
 };
 
 export const GALLERY = {
-  tiers: 8,
-  ringWidth: 1.6,
-  gap: 0.01,
+  tiers: 12,
+  ringWidth: .80,
+  gap: 0.001,
   baseY: 0.20,
-  heightStep: 0.6,
+  heightStep: 0.3,
   thickness: .55,
 };
+
+export const GALLERY_SEATS = {
+  // Medidas (en metros)
+  seat: {
+    size: 0.40,        // 40cm x 40cm (ancho en tangente y fondo radial)
+    height: 0.12,      // altura base del asiento (puedes ajustar)
+  },
+  backrest: {
+    height: 0.40,      // espaldar 40cm
+    thickness: 0.06,   // grosor del espaldar
+  },
+
+  // Separación entre butacas (tangencial, para que no choquen)
+  spacing: 0.15,
+
+  // Qué tan “atrás” van dentro del anillo (desde el borde exterior)
+  // mientras más pequeño, más pegadas al borde exterior
+  outerInset: 0.06,
+
+  // Levantar butacas sobre la galería (para que no se z-fight con el piso)
+  lift: 0.01,
+
+  // Colores (editables)
+  colors: {
+    seat: 0x902C3E ,
+    backrest: 0x902C3E ,
+  },
+
+  // Huecos tipo escaleras (en metros de ancho)
+  // centerAngle en radianes (0 = +X, PI/2 = +Z, -PI/2 = -Z)
+  stairs: [
+    // ejemplo: una escalera cerca de la entrada de público
+    { centerAngle: Math.PI  - 1/4, widthMeters: 1.5 },
+
+    // ejemplo: otra escalera levemente corrida
+    { centerAngle: Math.PI  + Math.PI / 4, widthMeters: 1.5 },
+
+    { centerAngle: Math.PI  + 2.4, widthMeters: 1.5 },
+
+    // ejemplo: otra escalera levemente corrida
+    { centerAngle: Math.PI + 3.5  , widthMeters: 1.5 },
+  ],
+};
+
+
 
 export const TOWERS = {
   // lado del cuadrado (ideal: igual al diámetro del escenario)
@@ -264,3 +309,92 @@ export const SAFETY_NET_LATERALS = {
   },
 };
 
+
+export const BACKSTAGE = {
+  tower: {
+    height: 6.0,
+    size: 0.7,        // ✅ 60–80cm típico (0.6 a 0.8)
+    tubeRadius: 0.035, // 3.5cm
+    bayHeight: 1.0,    // cada 1m un “módulo”
+  },
+
+  span: {
+    width: 7.5,       // distancia entre torres
+  },
+
+  position: {
+    x: 0,
+    y: 0,
+    z: 8,
+  },
+
+  material: {
+    color: 0xbfc5cc,
+    roughness: 0.35,
+    metalness: 0.85,
+  },
+};
+
+export const BACKSTAGE_CURTAINS = {
+  // tamaño de la cortina (en metros)
+  width: 7.0,       // debe coincidir con BACKSTAGE.span.width (o un poco más)
+  height: 6.0,       // cuánto cuelga hacia abajo
+
+  // posición relativa al travesaño
+  // cuelga desde la altura de la torre (8m) y se baja
+  topY: 6.0,         // normalmente = BACKSTAGE.tower.height
+  zOffset: 0.3,      // para que quede un poquito atrás del truss
+
+  bottomInset: 0.0, // metros: cuánto “se mete” hacia adentro el borde inferior externo
+
+  // pliegues
+  segmentsX: 40,
+  segmentsY: 18,
+  foldAmp: 0.12,     // amplitud pliegues (m)
+  foldFreq: 15.0,    // frecuencia pliegues
+
+  // abertura (opcional)
+  // 0 = cerrada total, 1 = abierta (mitades hacia los lados)
+  open: 0.51,
+
+  material: {
+    color: 0xb91c1c,     // rojo cortina
+    roughness: 0.9,
+    metalness: 0.0,
+    opacity: 0.95,
+  },
+};
+
+export const BACKSTAGE_SIDE_CURTAINS = {
+  topY: 0.0,
+
+  // altura de tela en cada extremo
+  heightNearRed: 6.0,
+  heightAtCircus: 4.0,
+
+  length:8,
+
+  // desde dónde parten (usar borde de la roja)
+  // se lee desde BACKSTAGE_CURTAINS.width
+
+  // ✅ Direcciones (diagonal) en radianes, EN MUNDO (se calcula al borde del círculo real)
+  // Ajusta esto hasta que coincida con la diagonal de tu galería
+  leftAngle:  Math.PI * -0.65,  // hacia izquierda + un poco hacia arriba/atrás
+  rightAngle: Math.PI * -0.35,  // hacia derecha + un poco hacia arriba/atrás
+
+  // pequeño offset en Z para que no choque con el truss
+  zNearOffset: 0,
+
+  // pliegues
+  segmentsU: 30,
+  segmentsV: 18,
+  foldAmp: 0.06,
+  foldFreq: 7.0,
+
+  material: {
+    color: 0x08162f,
+    roughness: 0.95,
+    metalness: 0.0,
+    opacity: 0.96,
+  },
+};

@@ -18,6 +18,13 @@ import { createSafetyNetSides } from "./elements/safetyNetSides.js";
 import { createSafetyNetLaterals } from "./elements/safetyNetLaterals.js";
 import { createSafetyNetLateralsAnchored } from "./elements/safetyNetLateralsAnchored.js";
 import { createSafetyNetWalls } from "./elements/safetyNetWalls.js";
+import { createGallerySeats } from "./elements/gallerySeats.js";
+
+import { createBackstage } from "./elements/backstage.js";
+
+import { createBackstageCurtains } from "./elements/backstageCurtains.js";
+import { createBackstageSideCurtains } from "./elements/backstageSideCurtains.js";
+
 
 
 
@@ -46,6 +53,8 @@ export function initThreeScene(canvas) {
   scene.add(createCircusBase());
   scene.add(createStage());
   scene.add(createGallery());
+  scene.add(createGallerySeats());
+
   scene.add(createCircusTowers());
   scene.add(createDomeTruss());
   scene.add(createRectangularTruss());
@@ -58,6 +67,10 @@ export function initThreeScene(canvas) {
   
   // scene.add(createSafetyNetLateralsAnchored());
   scene.add(createSafetyNetWalls());
+  scene.add(createBackstage());
+  scene.add(createBackstageCurtains());
+  
+  scene.add(createBackstageSideCurtains());
 
 
   function animate() {

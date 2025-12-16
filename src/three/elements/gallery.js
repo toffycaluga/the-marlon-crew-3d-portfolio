@@ -96,7 +96,7 @@ export function createGallery() {
   const publicExitAngle = Math.PI / 9;  // <-- ajusta libremente
 
   const material = new THREE.MeshStandardMaterial({
-    color: 0xff2d9a,
+    color: 0x494949,
     roughness: 0.7,
     metalness: 0.08,
   });
