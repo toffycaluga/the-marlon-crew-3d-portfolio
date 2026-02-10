@@ -119,11 +119,11 @@ export function createSafetyNetWalls() {
 
     group.add(
       buildEndWall({
-        xEdge: hx +7,
-        baseY: topBaseY,
+        xEdge: hx +3 ,
+        baseY: topBaseY ,
         zStart: -hz,
         zEnd: hz,
-        cfg: extTop,
+        cfg: extTop ,
         mat,
       })
     );

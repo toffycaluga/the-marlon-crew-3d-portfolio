@@ -24,7 +24,7 @@ export function createSafetyNetBase() {
   const { length, width, tubeRadius, y } = SAFETY_NET.frame;
 
   const mat = new THREE.MeshStandardMaterial({
-    color: 0x393939,
+    color: 0xFFFFFF,
     roughness: 0.35,
     metalness: 0.85,
   });

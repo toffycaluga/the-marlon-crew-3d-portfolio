@@ -3,7 +3,7 @@
 export const METERS = 1; // 1 unidad = 1 metro
 
 export const CIRCUS = {
-  radius: 17,        // 34m diámetro
+  radius: 18,        // 34m diámetro
 };
 
 export const STAGE = {
@@ -68,7 +68,7 @@ export const GALLERY_SEATS = {
 export const TOWERS = {
   // lado del cuadrado (ideal: igual al diámetro del escenario)
   // si tu STAGE.radius = 4 (diámetro 8), entonces side = 8
-  squareSide: 11,
+  squareSide: 16,
 
   height: 18,     // metros
   width: 0.7,     // 60 a 80 cm (0.6 - 0.8). aquí 0.7 por defecto
@@ -80,7 +80,7 @@ export const TOWERS = {
 };
 
 export const DOME = {
-  diameter: 12,
+  diameter: 17,
   height: 15,
 
   trussThickness: 0.6,
@@ -235,7 +235,7 @@ export const SAFETY_NET = {
 
     // ✅ Red lateral A (9m)
     left: {
-      length: 9.0,
+      length: 5.0,
 
       // offsets (mueves esta red sin afectar la otra)
       offset: { x: -12, y: 10, z: 10 },
@@ -292,19 +292,19 @@ export const SAFETY_NET_LATERALS = {
 
   // ✅ Pared en la punta X negativa (izquierda del largo)
   endA: {
-    height: 7.0,                 // 9m
-    topOffset: { x: -7, z: 0 },    // opcional (inclinar arriba)
+    height:5.9,                 // 9m
+    topOffset: { x: - 1.5, z: 0 },    // opcional (inclinar arriba)
   },
 
   // ✅ Pared en la punta X positiva (derecha del largo)
   endB: {
-    height: 6.0,                // 11m
-    topOffset: { x: 7, z: 0 },
+    height: 4.0,                // 11m
+    topOffset: { x: 3, z: 0 },
   },
    // ✅ NUEVA: pared corta desde el “final” de endB
   // ✅ NUEVO: extensión desde ARRIBA de endB
   endBTopExtension: {
-    height: 3.5,           // sube 4m más desde el borde superior
+    height: 6,           // sube 4m más desde el borde superior
     topOffset: { x: -5, z: 0 }, // opcional (inclinar arriba sin torcer)
   },
 };
@@ -396,5 +396,72 @@ export const BACKSTAGE_SIDE_CURTAINS = {
     roughness: 0.95,
     metalness: 0.0,
     opacity: 0.96,
+  },
+};
+
+
+export const POLES = {
+  count: 36,
+  height: 4.5,
+  diameter: 0.12,
+
+  // "Punta" ahora es cilindro macizo
+  tipHeight: 0.20,     // 20cm de largo
+  tipDiameter: 0.03,   // 3cm de diámetro
+
+  inset: 0.15,
+  radialSegments: 24,
+};
+
+export const TENT = {
+  // Radio superior (usa el domo por defecto desde tent.js)
+  // Radio inferior (usa CIRCUS.radius por defecto desde tent.js)
+
+  // A qué altura llega la carpa abajo (ideal: cerca del tope de los parales)
+  bottomY: 4.5, // ajusta si quieres más baja (ej: 3.6) o más alta (ej: 4.5)
+
+  // Suavidad de la malla
+  segmentsAround: 160,
+  segmentsHeight: 28,
+
+  // ✅ LISO: sin pliegues
+  foldAmp: 0,
+  foldFreq: 0.0,
+
+  // ✅ Caída tipo lona (máx en el centro del “alto”)
+  // 0 = totalmente recta/tensa
+  sagAmount: 2.0, // recomendado 1.2–2.5
+
+  // ✅ Colores (IMPORTANTE: fuera blanco, dentro azul)
+  colors: {
+    outside: 0xf2f2f2, // blanco exterior
+    inside: 0x0b2a6f,  // azul interior
+  },
+
+  material: {
+    roughness: 0.95,
+    metalness: 0.0,
+    opacity: 1, // 1.0 = sólida (sin transparencia)
+  },
+};
+
+
+export const ENTRANCE_SIGN = {
+  textureUrl: "/textures/caceres_sign.png",
+
+  // Bombillas
+  bulbs: {
+    enabled: true,
+    countPerSideLong: 18,  // arriba/abajo
+    countPerSideShort: 7,  // lados
+    radius: 0.06,          // tamaño ampolleta
+    offset: 0.10,          // separa del marco
+    emissive: 0xffe8a3,
+    emissiveIntensity: 2.2,
+    metalness: 0.0,
+    roughness: 0.25,
+    addPointLights: false, // true si quieres luz real (más costoso)
+    pointLightIntensity: 0.6,
+    pointLightDistance: 2.2,
   },
 };
