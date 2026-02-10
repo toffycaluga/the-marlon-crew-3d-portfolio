@@ -1,9 +1,12 @@
 ---
-import es from '../i18n/es.json';
-import en from '../i18n/en.json';
-import LoadingScreen from './LoadingScreen.astro';
+import es from "../i18n/es.json";
+import en from "../i18n/en.json";
+import LoadingScreen from "./LoadingScreen.astro";
 
-const initialLang = 'es';
+// ✅ Esto hace que Vite genere un asset con URL servida (/_astro/...)
+import bootstrapUrl from "../scripts/bootstrapClient.js?url";
+
+const initialLang = "es";
 const messagesByLang = { es, en };
 const messages = messagesByLang[initialLang];
 ---
@@ -14,11 +17,7 @@ const messages = messagesByLang[initialLang];
   <canvas id="three-canvas"></canvas>
 
   <div class="overlay-ui">
-    <select
-      id="lang-switcher"
-      class="lang-switcher"
-      style="pointer-events: auto;"
-    >
+    <select id="lang-switcher" class="lang-switcher" style="pointer-events: auto;">
       <option value="es">ES</option>
       <option value="en">EN</option>
     </select>
@@ -58,18 +57,10 @@ const messages = messagesByLang[initialLang];
             {messages.contact.form.eventTypeLabel}
           </label>
           <select id="contact-type" name="eventType">
-            <option id="opt-show" value="show">
-              {messages.contact.eventTypes.show}
-            </option>
-            <option id="opt-corp" value="corporativo">
-              {messages.contact.eventTypes.corporativo}
-            </option>
-            <option id="opt-fest" value="festival">
-              {messages.contact.eventTypes.festival}
-            </option>
-            <option id="opt-other" value="otro">
-              {messages.contact.eventTypes.otro}
-            </option>
+            <option value="show">{messages.contact.eventTypes.show}</option>
+            <option value="corporativo">{messages.contact.eventTypes.corporativo}</option>
+            <option value="festival">{messages.contact.eventTypes.festival}</option>
+            <option value="otro">{messages.contact.eventTypes.otro}</option>
           </select>
         </div>
 
@@ -86,23 +77,19 @@ const messages = messagesByLang[initialLang];
           ></textarea>
         </div>
 
-        <button id="submit-btn" type="submit" class="contact-submit">
+        <button type="submit" class="contact-submit">
           {messages.contact.form.submit}
         </button>
 
         <div class="contact-extra">
-          <p id="extra-text">{messages.contact.extra.alsoText}</p>
+          <p>{messages.contact.extra.alsoText}</p>
           <ul class="contact-extra-list">
             <li>
-              <strong id="extra-phone-label">
-                {messages.contact.extra.phoneLabel}:
-              </strong>
+              <strong>{messages.contact.extra.phoneLabel}:</strong>
               {` ${messages.contact.extra.phoneValue}`}
             </li>
             <li>
-              <strong id="extra-email-label">
-                {messages.contact.extra.emailLabel}:
-              </strong>
+              <strong>{messages.contact.extra.emailLabel}:</strong>
               {` ${messages.contact.extra.emailValue}`}
             </li>
           </ul>
@@ -166,19 +153,11 @@ const messages = messagesByLang[initialLang];
     font-size: 0.8rem;
     border-radius: 999px;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.15s ease,
-      border-color 0.2s ease;
+    transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
   }
 
   .view-buttons button:hover {
     background: rgba(255, 255, 255, 0.12);
-  }
-
-  .view-buttons button.active {
-    background: #f97316;
-    border-color: #f97316;
-    color: #111827;
-    transform: translateY(-1px);
   }
 
   .view-panel {
@@ -192,104 +171,8 @@ const messages = messagesByLang[initialLang];
     font-size: 0.9rem;
     backdrop-filter: blur(8px);
     pointer-events: auto;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-  }
-
-  .view-panel.is-updating {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-
-  .view-panel h2 {
-    margin: 0 0 0.4rem 0;
-    font-size: 1rem;
-  }
-
-  .view-panel p {
-    margin: 0 0 0.5rem 0;
-    line-height: 1.4;
-  }
-
-  .contact-form {
-    margin-top: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-  }
-
-  .form-group label {
-    font-size: 0.8rem;
-    color: #e5e7eb;
-  }
-
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    border-radius: 0.5rem;
-    border: 1px solid #4b5563;
-    background: rgba(15, 23, 42, 0.9);
-    color: #f9fafb;
-    padding: 0.35rem 0.5rem;
-    font-size: 0.85rem;
-    outline: none;
-  }
-
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus {
-    border-color: #f97316;
-  }
-
-  .contact-submit {
-    margin-top: 0.25rem;
-    background: linear-gradient(90deg, #f97316, #ec4899);
-    border: none;
-    border-radius: 999px;
-    color: #111827;
-    font-weight: 600;
-    padding: 0.4rem 0.9rem;
-    font-size: 0.85rem;
-    cursor: pointer;
-    align-self: flex-end;
-  }
-
-  .contact-submit:hover {
-    opacity: 0.9;
-  }
-
-  .contact-extra {
-    margin-top: 0.5rem;
-    font-size: 0.8rem;
-    color: #e5e7eb;
-  }
-
-  .contact-extra-list {
-    margin: 0;
-    padding-left: 1rem;
   }
 </style>
 
-<script type="module">
-  import { initThreeScene } from '/src/three/initScene.js';
-  import { initI18nState } from '/src/scripts/i18nState.js';
-  import { initUI } from '/src/scripts/uiController.js';
-  import { initLoader } from '/src/scripts/loader.js';
-
-  if (typeof window !== 'undefined') {
-    window.addEventListener('DOMContentLoaded', () => {
-      const canvas = document.getElementById('three-canvas');
-      if (!canvas) return;
-
-      initI18nState();
-      initLoader();
-      initUI();
-      initThreeScene(canvas);
-    });
-  }
-</script>
+<!-- ✅ ÚNICA carga de JS (bundleado por Vite, URL real http://.../_astro/...) -->
+<script type="module" src={bootstrapUrl}></script>
