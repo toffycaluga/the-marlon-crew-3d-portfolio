@@ -1,149 +1,81 @@
-# 🎪 Flying Cáceres – 3D Circus Portfolio
+# The Marlon Crew – 3D Portfolio
 
-Portafolio interactivo para **The Flying Cáceres**, donde el usuario recorre un circo en 3D y, desde diferentes puntos de vista, descubre la historia, el equipo, los aparatos, los videos y la información de contacto de la troupe.
+An immersive 3D portfolio created for **The Marlon Crew**, designed to showcase a real-scale circus environment through interactive visuals, dynamic lighting, and spatial composition.
 
-La experiencia se construye sobre **Astro.js** (como framework principal) y **Three.js** (para la escena 3D).
-
----
-
-## 🎯 Objetivo
-
-Crear una experiencia web inmersiva donde:
-
-- El visitante recorra un circo virtual.
-- Cada vista represente una sección clave del proyecto Flying Cáceres.
-- Todo el contenido esté disponible en múltiples idiomas (ES/EN en la versión inicial).
-- Se puedan destacar:
-  - El fundador,
-  - Los equipos,
-  - La confección de aparatos y vestuario,
-  - El show (videos alojados en AWS),
-  - Información técnica para productores.
+This project combines artistic direction and technical implementation to present a digital stage inspired by real circus productions.
 
 ---
 
-## 🧭 Vistas 3D y secciones
+## 🎪 Project Overview
 
-La aplicación tendrá **una única escena 3D** con varios puntos de vista (presets de cámara):
+This 3D portfolio represents a custom-built circus stage featuring:
 
-1. **Plataforma del trapecio (`trapecio`)**
-   - Rol: Landing principal / Acts highlight.
-   - Cámara elevada mirando al interior de la carpa.
-   - Contenido:
-     - Presentación corta de The Flying Cáceres.
-     - Enfoque en el triple y el cruce.
-     - CTAs hacia: “Ver el show” (vista público) y “Conocer al fundador” (entrada).
+- Real-world scale geometry
+- Custom truss and stage structures
+- Programmable moving-head lighting
+- Scene-based lighting presets
+- Interactive camera views
 
-2. **Vestidores (`vestidores`)**
-   - Rol: Backstage humano y vestuario.
-   - Escena con percheros y trajes simplificados.
-   - Contenido:
-     - Información sobre confección de vestuario.
-     - Presentación del equipo artístico y técnico.
-
-3. **Desde el público (`publico`)**
-   - Rol: Showreel principal (videos desde AWS).
-   - Cámara en las gradas mirando al escenario.
-   - Contenido:
-     - Galería de videos (promos, actos, highlight reels).
-
-4. **Equipos (`equipos`)**
-   - Rol: Aparatos, fabricación y seguridad.
-   - Escena con estructuras y elementos técnicos.
-   - Contenido:
-     - Listado de aparatos y servicios.
-     - Información de seguridad y estándares técnicos.
-
-5. **Entrada del circo (`entrada`)**
-   - Rol: About / Founder.
-   - Escena con la entrada de la carpa y un cuadro del fundador.
-   - Contenido:
-     - Bio del fundador.
-     - Historia breve de la troupe.
-
-6. **Utilería (`utileria`)**
-   - Rol: Extras, FAQ y press kit.
-   - Escena con cajas y elementos de backstage.
-   - Contenido:
-     - FAQ para productores.
-     - Links a press kit, fotos y redes sociales.
-
-7. **Pantalla de carga (`loading`)**
-   - Rol: Experiencia de inicio + carga real de assets.
-   - Visual: carpa o telón cerrado, barra de progreso.
-   - Conectado al `LoadingManager` de Three.js.
+The goal is not to simulate a full show, but to **communicate identity, atmosphere, and technical precision** through an immersive experience.
 
 ---
 
-## 🌐 Multiidioma (i18n)
+## 💡 Key Features
 
-- Versión inicial: **ES** y **EN**.
-- Futuro: DE, IT, FR, ZH.
-
-Estrategia:
-
-- Archivos JSON por idioma:
-  - `src/i18n/es.json`
-  - `src/i18n/en.json`
-- Claves organizadas por:
-  - `global.*` (títulos, menú, footer),
-  - `views.*` (textos por vista),
-  - `content.*` (biografías, descripciones más largas).
-- Switch de idioma en la UI (ES/EN) que:
-  - Actualiza el `lang` actual.
-  - Re-renderiza los textos visibles.
+- **Real-scale 3D environment** inspired by professional circus setups  
+- **Modular moving-head lighting system**, grouped and data-driven  
+- **Scene-based lighting control** tied to camera views  
+- **Custom-built structures** (stage, truss, towers, dome, backstage)  
+- **Smooth camera navigation** for exploration and presentation  
+- **Performance-conscious architecture** using reusable components  
 
 ---
 
-## 🧱 Stack técnico
+## 🛠️ Technical Stack
 
-- **Astro.js**: estructura del proyecto, routing y renderizado de contenido.
-- **Three.js**: escena 3D, cámaras, luces y geometrías.
-- **Vite (interno de Astro)**: bundling.
-- **CSS / Tailwind (opcional)**: estilado de la UI 2D (paneles, menús, botones).
-- **AWS S3 / CloudFront**: almacenamiento de videos (integraremos las URLs en la vista “Desde el público”).
+- **Three.js** – 3D rendering and scene management  
+- **JavaScript (ES Modules)** – modular architecture  
+- **Custom lighting rig system** – data-driven positioning and grouping  
+- **Post-processing effects** – bloom and tone mapping  
 
----
-
-## 🗺️ Roadmap de desarrollo
-
-### Fase 1 – Diseño y estructura (sin Blender)
-
-1. Definir contenido por vista (textos, imágenes, videos AWS).
-2. Implementar estructura base en Astro:
-   - Ruta `/` como experiencia principal.
-3. Crear componente `<ThreeScene />`:
-   - Escena, cámara, renderer.
-   - Geometrías básicas para las zonas del circo.
-4. Definir presets de cámara para cada vista y sistema de cambio de vista.
-
-### Fase 2 – i18n y contenido real
-
-1. Crear `es.json` y `en.json` con todo el texto.
-2. Integrar un sistema simple de traducción (`t()`).
-3. Conectar cada vista a su contenido traducible.
-4. Integrar videos de AWS en la vista “Desde el público”.
-
-### Fase 3 – Mejora visual y animaciones
-
-1. Añadir luces, efectos y pequeñas animaciones de cámara.
-2. Agregar partículas / efectos para reforzar la sensación de show.
-3. Implementar pantalla de carga real con `LoadingManager`.
-
-### Fase 4 – Blender (opcional, fase avanzada)
-
-1. Modelar carpa low poly y algunos aparatos en Blender.
-2. Exportar a GLB/GLTF.
-3. Cargar modelos con `GLTFLoader` y reemplazar geometrías básicas.
+No external 3D models are used — all structures are built procedurally.
 
 ---
 
-## ✅ Objetivo de la primera versión (MVP)
+## 🧠 Design Philosophy
 
-- Home `/` con:
-  - Escena 3D básica.
-  - 4–5 vistas funcionales (cambio de cámara).
-  - Textos en ES/EN.
-  - Al menos 1 video funcional desde AWS.
-- Interfaz clara para navegar entre:
-  - Acts, founder, equipos, videos y contacto (aunque sea minimalista).
+This project follows a few core principles:
+
+- **Data over hardcoding** – lights and rigs are defined through configuration files  
+- **Separation of concerns** – visuals, logic, and control layers are clearly separated  
+- **Real-world inspiration** – dimensions and layouts reflect real circus setups  
+- **Clarity over complexity** – systems are designed to be readable and extensible  
+
+---
+
+## 🎯 Purpose
+
+This project was created as:
+
+- A **creative and technical portfolio**
+- A way to explore **lighting design concepts** in 3D
+- A foundation for future **interactive or visualization tools**
+
+It is not intended as a generic engine or production-ready framework.
+
+---
+
+## 👤 Author
+
+Created by **Toffy Caluga**  
+Creative Developer & Circus Artist  
+
+This project reflects a blend of technical problem-solving and artistic background, combining software development with real-world performance experience.
+
+---
+
+## 📌 Notes
+
+This repository is primarily intended for portfolio and demonstration purposes.  
+Feel free to explore the code structure and architecture.
+
