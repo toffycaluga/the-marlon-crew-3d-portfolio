@@ -4,7 +4,7 @@ import en from "../i18n/en.json";
 import LoadingScreen from "./LoadingScreen.astro";
 
 // ✅ Esto hace que Vite genere un asset con URL servida (/_astro/...)
-import bootstrapUrl from "../scripts/bootstrapClient.js?url";
+import bootstrapUrl from "../entry/bootstrapClient.entry.js?url";
 
 const initialLang = "es";
 const messagesByLang = { es, en };
