@@ -3,8 +3,13 @@ import es from "../i18n/es.json";
 import en from "../i18n/en.json";
 import LoadingScreen from "./LoadingScreen.astro";
 
-// ✅ Esto hace que Vite genere un asset con URL servida (/_astro/...)
 import bootstrapUrl from "../entry/bootstrapClient.entry.js?url";
+
+// ✅ URLs reales servidas por Vite (/_astro/...)
+import initSceneUrl from "../three/initScene.js?url";
+import i18nStateUrl from "../scripts/i18nState.js?url";
+import uiControllerUrl from "../scripts/uiController.js?url";
+import loaderUrl from "../scripts/loader.js?url";
 
 const initialLang = "es";
 const messagesByLang = { es, en };
@@ -109,13 +114,11 @@ const messages = messagesByLang[initialLang];
     position: relative;
     background: #050509;
   }
-
   #three-canvas {
     width: 100%;
     height: 100%;
     display: block;
   }
-
   .overlay-ui {
     position: absolute;
     top: 1rem;
@@ -127,7 +130,6 @@ const messages = messagesByLang[initialLang];
     z-index: 10;
     pointer-events: none;
   }
-
   .lang-switcher {
     background: rgba(0, 0, 0, 0.7);
     border: 1px solid #ffffff33;
@@ -136,7 +138,6 @@ const messages = messagesByLang[initialLang];
     border-radius: 6px;
     font-size: 0.8rem;
   }
-
   .view-buttons {
     display: flex;
     flex-direction: column;
@@ -144,7 +145,6 @@ const messages = messagesByLang[initialLang];
     margin-left: 0.5rem;
     pointer-events: auto;
   }
-
   .view-buttons button {
     background: rgba(0, 0, 0, 0.7);
     border: 1px solid #ffffff33;
@@ -155,11 +155,9 @@ const messages = messagesByLang[initialLang];
     cursor: pointer;
     transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
   }
-
   .view-buttons button:hover {
     background: rgba(255, 255, 255, 0.12);
   }
-
   .view-panel {
     margin-left: auto;
     max-width: 340px;
@@ -174,5 +172,12 @@ const messages = messagesByLang[initialLang];
   }
 </style>
 
-<!-- ✅ ÚNICA carga de JS (bundleado por Vite, URL real http://.../_astro/...) -->
-<script type="module" src={bootstrapUrl}></script>
+<!-- ✅ Entry como asset + pasamos URLs reales para dynamic import -->
+<script
+  type="module"
+  src={bootstrapUrl}
+  data-init-scene={initSceneUrl}
+  data-i18n-state={i18nStateUrl}
+  data-ui-controller={uiControllerUrl}
+  data-loader={loaderUrl}
+></script>
