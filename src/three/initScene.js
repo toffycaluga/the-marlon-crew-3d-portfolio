@@ -55,6 +55,11 @@ import { createEntranceBulbsController } from "./controllers/entranceBulbsContro
 import { createLightsRig } from "./lights/lightsRig.js";
 import { createLightsController } from "./lights/lightsController.js";
 
+// ✅ Client modules (sin archivo bootstrap separado)
+import { initI18nState } from "../scripts/i18nState.js";
+import { initUI } from "../scripts/uiController.js";
+import { initLoader } from "../scripts/loader.js";
+
 // ============================================================
 // Config (un solo lugar)
 // ============================================================
@@ -353,4 +358,23 @@ export function initThreeScene(canvas) {
     lightsController,
     dispose,
   };
+}
+
+// ============================================================
+// Client entry (SIN bootstrapClient.entry.js)
+// ============================================================
+export function startClient() {
+  // Protege SSR (por si alguien lo importa en server)
+  if (typeof window === "undefined") return;
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const canvas = document.getElementById("three-canvas");
+    if (!canvas) return;
+
+    initI18nState();
+    initLoader();
+    initUI();
+
+    initThreeScene(canvas);
+  });
 }
